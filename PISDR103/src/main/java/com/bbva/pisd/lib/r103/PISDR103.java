@@ -39,11 +39,9 @@ public interface PISDR103 {
 	}
 
 	enum Errors {
-			NO_DATA_FOUND("PISD00120000");
+		NO_DATA_FOUND("PISD00120000");
 		private final String adviceCode;
-		Errors(String adviceCode) {
-			this.adviceCode = adviceCode;
-		}
+		Errors(String adviceCode) {this.adviceCode = adviceCode;}
 		public String getAdviceCode() { return adviceCode; }
 	}
 	int executeSaveInsuranceCancellationRequest(Map<String, Object> arguments);

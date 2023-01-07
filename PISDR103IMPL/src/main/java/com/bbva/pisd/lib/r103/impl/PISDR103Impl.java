@@ -48,7 +48,7 @@ public class PISDR103Impl extends PISDR103Abstract {
 				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_CANCELLATION_REQUEST] Result -> Key {} with value: {}", key, value)));
 			} catch (NoResultException ex) {
 				LOGGER.debug("executeGetCancellationRequests - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSURANCE_CANCELLATION_REQUEST]");
-				this.addAdvice(Properties.ERROR_QUERY_EMPTY_RESULT.getValue());
+				this.addAdvice(Errors.NO_DATA_FOUND.getAdviceCode());
 			}
 		} else {
 			LOGGER.info("executeGetCancellationRequests - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSURANCE_CANCELLATION_REQUEST]");

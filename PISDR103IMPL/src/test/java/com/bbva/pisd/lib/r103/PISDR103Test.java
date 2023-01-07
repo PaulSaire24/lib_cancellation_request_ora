@@ -97,4 +97,10 @@ public class PISDR103Test {
 		assertEquals(0, validation);
 	}
 
+	@Test
+	public void executeEnumTest(){
+		LOGGER.info("PISDR103Test - Executing executeEnumTest...");
+		assertNotNull(PISDR103.Errors.NO_DATA_FOUND);
+	}
+
 }
