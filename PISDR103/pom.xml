@@ -28,6 +28,13 @@
 						<Bundle-SymbolicName>${project.artifactId}-${project.version}</Bundle-SymbolicName>
 						<Bundle-Category>library</Bundle-Category>
 						<Import-Package>
+							com.bbva.elara.*;version="${osgi.version.manifest}",
+							org.osgi.framework;version="${osgi.version.manifest}",
+							com.bbva.elara.aspect;version="${osgi.version.manifest}",
+							spring;version="${osgi.version.manifest}",
+							org.springframework.aop;version="${osgi.version.manifest}",
+							org.springframework.aop.framework;version="${osgi.version.manifest}",
+							org.aopalliance.aop;version="${osgi.version.manifest}",
 							*;version="${osgi.version.manifest}"
 						</Import-Package>
 					</instructions>

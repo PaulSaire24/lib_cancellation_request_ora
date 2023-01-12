@@ -1,13 +1,13 @@
 package com.bbva.pisd.lib.r103;
 
+import java.util.Map;
+
 /**
  * The  interface PISDR103 class...
  */
 public interface PISDR103 {
 
-	/**
-	 * The execute method...
-	 */
-	void execute();
+	int executeSaveInsuranceRequestCancellation(Map<String, Object> arguments);
 
+	Map<String, Object> executeGetRequestCancellationId();
 }
