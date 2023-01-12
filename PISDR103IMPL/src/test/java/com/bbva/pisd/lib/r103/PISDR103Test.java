@@ -18,13 +18,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -50,8 +49,31 @@ public class PISDR103Test {
 		jdbcUtils = mock(JdbcUtils.class);
 		pisdr103.setJdbcUtils(jdbcUtils);
 
+		when(arguments.get(PISDR103.Fields.REQUEST_SEQUENCE_ID.toString())).thenReturn("123456789");
 		when(arguments.get(PISDR103.Fields.INSURANCE_CONTRACT_ENTITY_ID.toString())).thenReturn("11");
 		when(arguments.get(PISDR103.Fields.INSURANCE_CONTRACT_BRANCH_ID.toString())).thenReturn("01");
+		when(arguments.get(PISDR103.Fields.INSURANCE_PRODUCT_ID.toString())).thenReturn("830");
+		when(arguments.get(PISDR103.Fields.CHANNEL_ID.toString())).thenReturn("PC");
+		when(arguments.get(PISDR103.Fields.USER_AUDIT_ID.toString())).thenReturn("USER");
+	}
+
+	@Test
+	public void executeSaveInsuranceCancellationRequestOK(){
+		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceCancellationRequestOK...");
+		when(jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_REQUEST_CNCL.getValue(), arguments)).thenReturn(1);
+		int validation = pisdr103.executeSaveInsuranceRequestCancellation(arguments);
+		assertEquals(1, validation);
+	}
+
+	@Test
+	public void executeGetRequestCancellationIdOK(){
+		LOGGER.info("PISDR103Test - Executing executeGetRequestCancellationIdOK...");
+		Map<String, Object> requestCancellationId = new HashMap<String, Object>() {{
+			put("key", new Object());
+		}};
+		when(jdbcUtils.queryForMap(Properties.QUERY_SELECT_REQUEST_SEQUENCE_ID.getValue(), arguments)).thenReturn(requestCancellationId);
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationId();
+		assertNotNull(validation);
 	}
 
 	@Test
@@ -75,26 +97,6 @@ public class PISDR103Test {
 		LOGGER.info("PISDR103Test - Executing executeGetCancellationRequestsWithNull...");
 		List<Map<String, Object>> validation = pisdr103.executeGetCancellationRequests(Collections.emptyMap());
 		assertEquals(0, validation.size());
-	}
-
-	@Test
-	public void executeSaveInsuranceCancellationRequestOK(){
-		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceCancellationRequestOK...");
-		when(jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_CNCL_REQUEST.getValue(), arguments)).thenReturn(1);
-		int validation = pisdr103.executeSaveInsuranceCancellationRequest(arguments);
-		assertTrue(validation > 0);
-	}
-
-	@Test
-	public void executeSaveInsuranceCancellationRequestWithNoResult(){
-		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceCancellationRequestWithNoResultException...");
-		when(jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_CNCL_REQUEST.getValue(), arguments)).thenReturn(0);
-		int validation = pisdr103.executeSaveInsuranceCancellationRequest(arguments);
-		assertEquals(0, validation);
-
-		when(arguments.get(anyString())).thenReturn(null);
-		validation = pisdr103.executeSaveInsuranceCancellationRequest(arguments);
-		assertEquals(0, validation);
 	}
 
 	@Test

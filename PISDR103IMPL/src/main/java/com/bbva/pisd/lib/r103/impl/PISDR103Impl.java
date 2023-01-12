@@ -1,6 +1,7 @@
 package com.bbva.pisd.lib.r103.impl;
 
 import com.bbva.apx.exception.db.NoResultException;
+import com.bbva.pisd.lib.r103.PISDR103;
 import com.bbva.pisd.lib.r103.impl.utils.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,21 +19,13 @@ public class PISDR103Impl extends PISDR103Abstract {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR103Impl.class);
 
-	public static final String FIELD_REQUEST_SEQUENCE_ID = "REQUEST_SEQUENCE_ID";
-	public static final String FIELD_CHANNEL_ID = "CHANNEL_ID";
-	public static final String FIELD_INSURANCE_PRODUCT_ID = "INSURANCE_PRODUCT_ID";
-	public static final String FIELD_USER_AUDIT_ID = "USER_AUDIT_ID";
-
-	private static final String QUERY_INSERT_INSURANCE_REQUEST_CNCL = "PISD.INSERT_INSURANCE_REQUEST_CNCL";
-	private static final String QUERY_SELECT_REQUEST_SEQUENCE_ID = "PISD.SELECT_REQUEST_SEQUENCE_ID";
-
 	@Override
 	public int executeSaveInsuranceRequestCancellation(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellation START *****");
 		int affectedRow = 0;
-		if (parametersEvaluation(arguments, FIELD_REQUEST_SEQUENCE_ID, FIELD_CHANNEL_ID, FIELD_INSURANCE_PRODUCT_ID, FIELD_USER_AUDIT_ID)) {
+		if (parametersEvaluation(arguments, PISDR103.Fields.REQUEST_SEQUENCE_ID.toString(), PISDR103.Fields.CHANNEL_ID.toString(), PISDR103.Fields.INSURANCE_PRODUCT_ID.toString(), PISDR103.Fields.USER_AUDIT_ID.toString())) {
 			LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellation - PARAMETERS OK ... EXECUTING *****");
-			affectedRow = this.jdbcUtils.update(QUERY_INSERT_INSURANCE_REQUEST_CNCL, arguments);
+			affectedRow = this.jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_REQUEST_CNCL.getValue(), arguments);
 		} else {
 			LOGGER.debug("executeSaveInsuranceRequestCancellation - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_REQUEST_CNCL]");
 		}
@@ -44,28 +37,11 @@ public class PISDR103Impl extends PISDR103Abstract {
 	public Map<String, Object> executeGetRequestCancellationId() {
 		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellationId START *****");
 		Map<String, Object> response = this.jdbcUtils
-				.queryForMap(QUERY_SELECT_REQUEST_SEQUENCE_ID);
+				.queryForMap(Properties.QUERY_SELECT_REQUEST_SEQUENCE_ID.getValue());
 		response.forEach((key, value) -> LOGGER
 				.info("[PISD.SELECT_REQUEST_SEQUENCE_ID] Result -> Key {} with value: {}", key, value));
 		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellationId END *****");
 		return response;
-	}
-
-	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
-		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
-	public int executeSaveInsuranceCancellationRequest(Map<String, Object> arguments) {
-		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceCancellationRequest START *****");
-		int affectedRow = 0;
-
-		if(parametersEvaluation(arguments, Fields.INSURANCE_CONTRACT_ENTITY_ID.toString(),
-				Fields.INSURANCE_CONTRACT_BRANCH_ID.toString())) {
-			LOGGER.info("***** PISDR103Impl - executeSaveInsuranceCancellationRequest - PARAMETERS OK ... EXECUTING *****");
-			affectedRow = this.jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_CNCL_REQUEST.getValue(), arguments);
-		} else {
-			LOGGER.debug("executeSaveInsuranceCancellationRequest - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_CANCELLATION_REQUEST]");
-		}
-		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceCancellationRequest END *****");
-		return affectedRow;
 	}
 
 	@Override

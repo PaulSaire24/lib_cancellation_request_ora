@@ -46,9 +46,9 @@ public interface PISDR103 {
 		public String getAdviceCode() { return adviceCode; }
 	}
 
-	int executeSaveInsuranceCancellationRequest(Map<String, Object> arguments);
-
-	List<Map<String, Object>> executeGetCancellationRequests(Map<String, Object> arguments);
+	int executeSaveInsuranceRequestCancellation(Map<String, Object> arguments);
 
 	Map<String, Object> executeGetRequestCancellationId();
+
+	List<Map<String, Object>> executeGetCancellationRequests(Map<String, Object> arguments);
 }
