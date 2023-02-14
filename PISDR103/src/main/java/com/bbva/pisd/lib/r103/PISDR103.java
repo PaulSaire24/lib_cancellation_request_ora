@@ -72,7 +72,12 @@ public interface PISDR103 {
         INSRC_CNSD_DATA_VALUE_TYPE,
         POLICY_PAYMENT_FREQUENCY_TYPE,
         RECEIPT_START_DATE,
-        RECEIPT_END_DATE;
+        RECEIPT_END_DATE,
+		RECEIPT_STATUS_TYPE;
+	}
+
+	enum ReceiptStatusType {
+		COB,INC;
 	}
 
 	enum Errors {
