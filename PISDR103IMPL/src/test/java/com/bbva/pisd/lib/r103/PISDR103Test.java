@@ -24,6 +24,8 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -105,4 +107,39 @@ public class PISDR103Test {
 		assertNotNull(PISDR103.Errors.NO_DATA_FOUND);
 	}
 
+	@Test
+	public void executeGetRoyalPolicyDetailTestNoResultException(){
+		LOGGER.info("***** PISDR103Test - executeGetRoyalPolicyDetailTestNoResultException START *****");
+		List<Map<String, Object>> valid = pisdr103.executeGetRoyalPolicyDetail(null);
+		assertEquals(0, valid.size());
+
+		this.pisdr103.getAdviceList().clear();
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+		List<Map<String, Object>> resp = pisdr103.executeGetRoyalPolicyDetail("00110241341111111111");
+		assertEquals(0, resp.size());
+	}
+
+	@Test
+	public void executeGetRoyalPolicyDetailTestNullEmpty(){
+		LOGGER.info("***** PISDR103Test - executeGetRoyalPolicyDetailTestNullEmpty START *****");
+		List<Map<String, Object>> resp = pisdr103.executeGetRoyalPolicyDetail(null);
+		assertEquals(0, resp.size());
+
+		resp = pisdr103.executeGetRoyalPolicyDetail("");
+		assertEquals(0, resp.size());
+	}
+
+	@Test
+	public void executeGetRoyalPolicyDetailTestOK(){
+		LOGGER.info("***** PISDR103Test - executeGetRoyalPolicyDetailTestOK START *****");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap<>());
+		List<Map<String, Object>> validation = pisdr103.executeGetRoyalPolicyDetail("11111111111111111111");
+		assertNotNull(validation);
+
+		validation = pisdr103.executeGetRoyalPolicyDetail("11111111111111111111");
+		assertNotNull(validation);
+
+		validation = pisdr103.executeGetRoyalPolicyDetail("11111111111111111111");
+		assertNotNull(validation);
+	}
 }
