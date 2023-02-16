@@ -14,11 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * The  interface PISDR103Impl class...
- */
 public class PISDR103Impl extends PISDR103Abstract {
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR103Impl.class);
 
 	@Override
