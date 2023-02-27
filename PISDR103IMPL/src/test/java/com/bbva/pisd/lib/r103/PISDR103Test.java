@@ -68,6 +68,14 @@ public class PISDR103Test {
 	}
 
 	@Test
+	public void executeSaveInsuranceCancellationRequestMovOK(){
+		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceCancellationRequestMovOK...");
+		when(jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_REQ_CNCL_MOV.getValue(), arguments)).thenReturn(1);
+		int validation = pisdr103.executeSaveInsuranceRequestCancellationMov(arguments);
+		assertEquals(1, validation);
+	}
+
+	@Test
 	public void executeGetRequestCancellationIdOK(){
 		LOGGER.info("PISDR103Test - Executing executeGetRequestCancellationIdOK...");
 		Map<String, Object> requestCancellationId = new HashMap<String, Object>() {{

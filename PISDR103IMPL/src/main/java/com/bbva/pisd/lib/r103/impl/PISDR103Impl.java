@@ -35,7 +35,7 @@ public class PISDR103Impl extends PISDR103Abstract {
 	public int executeSaveInsuranceRequestCancellationMov(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationMov START *****");
 		int affectedRow = 0;
-		if (parametersEvaluation(arguments, PISDR103.Fields.REQUEST_SEQUENCE_ID.toString(), PISDR103.Fields.CHANNEL_ID.toString(), PISDR103.Fields.INSURANCE_PRODUCT_ID.toString(), PISDR103.Fields.USER_AUDIT_ID.toString())) {
+		if (parametersEvaluation(arguments, PISDR103.Fields.REQUEST_SEQUENCE_ID.toString(), PISDR103.Fields.USER_AUDIT_ID.toString())) {
 			LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationMov - PARAMETERS OK ... EXECUTING *****");
 			affectedRow = this.jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_REQ_CNCL_MOV.getValue(), arguments);
 		} else {
