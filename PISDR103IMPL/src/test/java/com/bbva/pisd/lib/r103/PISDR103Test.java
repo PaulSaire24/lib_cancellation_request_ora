@@ -150,4 +150,25 @@ public class PISDR103Test {
 		validation = pisdr103.executeGetRoyalPolicyDetail("11111111111111111111");
 		assertNotNull(validation);
 	}
+
+	@Test
+	public void executeGetRequestCancellationMovLastTestOK(){
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestOK START *****");
+		Map<String, Object> response = new HashMap<>();
+		response.put("REQUEST_SEQUENCE_ID", "123");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(response);
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetRequestCancellationMovLastTestNullEmpty(){
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestNullEmpty START *****");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap());
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		assertNotNull(validation);
+		assertEquals(0, validation.size());
+	}
 }

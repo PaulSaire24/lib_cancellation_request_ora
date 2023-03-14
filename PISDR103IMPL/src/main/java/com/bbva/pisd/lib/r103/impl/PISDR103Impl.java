@@ -99,6 +99,21 @@ public class PISDR103Impl extends PISDR103Abstract {
 		return response;
 	}
 
+	@Override
+	public Map<String, Object> executeGetRequestCancellationMovLast(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellationMovLast START *****");
+		Map<String, Object> response = null;
+		try {
+			response = this.jdbcUtils.queryForMap(Properties.QUERY_SELECT_INSURANCE_REQ_CNCL_MOV_LAST.getValue(), arguments);
+			response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST] Result -> Key {} with value: {}", key, value));
+		} catch (NoResultException ex) {
+			LOGGER.debug("executeGetCancellationRequests - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSURANCE_CANCELLATION_REQUEST]");
+			this.addAdvice(Errors.NO_DATA_FOUND.getAdviceCode());
+		}
+		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellationMovLast END *****");
+		return response;
+	}
+
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
 		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
 	}
