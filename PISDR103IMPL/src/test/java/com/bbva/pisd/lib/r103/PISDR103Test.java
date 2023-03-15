@@ -24,6 +24,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -60,23 +61,39 @@ public class PISDR103Test {
 	}
 
 	@Test
-	public void executeSaveInsuranceCancellationRequestOK(){
-		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceCancellationRequestOK...");
+	public void executeSaveInsuranceRequestCancellationTestOK(){
+		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceRequestCancellationTestOK...");
 		when(jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_REQUEST_CNCL.getValue(), arguments)).thenReturn(1);
 		int validation = pisdr103.executeSaveInsuranceRequestCancellation(arguments);
 		assertEquals(1, validation);
 	}
 
 	@Test
-	public void executeSaveInsuranceCancellationRequestMovOK(){
-		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceCancellationRequestMovOK...");
+	public void executeSaveInsuranceRequestCancellationTestNotInsert(){
+		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceRequestCancellationTestNotUpdate...");
+		when(arguments.get(PISDR103.Fields.REQUEST_SEQUENCE_ID.toString())).thenReturn(null);
+		int validation = pisdr103.executeSaveInsuranceRequestCancellation(arguments);
+		assertEquals(0, validation);
+	}
+
+	@Test
+	public void executeSaveInsuranceRequestCancellationMovTestOK(){
+		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceRequestCancellationMovTestOK...");
 		when(jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_REQ_CNCL_MOV.getValue(), arguments)).thenReturn(1);
 		int validation = pisdr103.executeSaveInsuranceRequestCancellationMov(arguments);
 		assertEquals(1, validation);
 	}
 
 	@Test
-	public void executeGetRequestCancellationIdOK(){
+	public void executeSaveInsuranceRequestCancellationMovTestNotInsert(){
+		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceRequestCancellationMovTestNotInsert...");
+		when(arguments.get(PISDR103.Fields.REQUEST_SEQUENCE_ID.toString())).thenReturn(null);
+		int validation = pisdr103.executeSaveInsuranceRequestCancellationMov(arguments);
+		assertEquals(0, validation);
+	}
+
+	@Test
+	public void executeGetRequestCancellationIdTestOK(){
 		LOGGER.info("PISDR103Test - Executing executeGetRequestCancellationIdOK...");
 		Map<String, Object> requestCancellationId = new HashMap<String, Object>() {{
 			put("key", new Object());
@@ -149,5 +166,35 @@ public class PISDR103Test {
 
 		validation = pisdr103.executeGetRoyalPolicyDetail("11111111111111111111");
 		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetRequestCancellationMovLastTestOK(){
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestOK START *****");
+		Map<String, Object> response = new HashMap<>();
+		response.put("REQUEST_SEQUENCE_ID", "123");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(response);
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetRequestCancellationMovLastTestEmpty(){
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestNullEmpty START *****");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap());
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		assertNotNull(validation);
+		assertEquals(0, validation.size());
+	}
+
+	@Test
+	public void executeGetRequestCancellationMovLastTestNoResultException() {
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestNoResultException START *****");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		assertNull(validation);
 	}
 }
