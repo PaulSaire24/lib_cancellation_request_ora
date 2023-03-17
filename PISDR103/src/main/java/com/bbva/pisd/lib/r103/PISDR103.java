@@ -97,5 +97,5 @@ public interface PISDR103 {
 
 	List<Map<String, Object>> executeGetRoyalPolicyDetail(String contractNumber);
 
-	Map<String, Object> executeGetRequestCancellationMovLast(Map<String, Object> arguments);
+	List<Map<String, Object>> executeGetRequestCancellationMovLast(Map<String, Object> arguments);
 }
