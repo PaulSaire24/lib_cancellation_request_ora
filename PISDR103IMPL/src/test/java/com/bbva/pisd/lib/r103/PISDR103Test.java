@@ -171,20 +171,21 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationMovLastTestOK(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestOK START *****");
-		Map<String, Object> response = new HashMap<>();
-		response.put("REQUEST_SEQUENCE_ID", "123");
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(response);
+		List<Map<String, Object>> response = new ArrayList<>();
+		response.add(new HashMap<>());
+		response.get(0).put("REQUEST_SEQUENCE_ID", "123");
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(response);
 
-		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNotNull(validation);
 	}
 
 	@Test
 	public void executeGetRequestCancellationMovLastTestEmpty(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestNullEmpty START *****");
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap());
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(new ArrayList());
 
-		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNotNull(validation);
 		assertEquals(0, validation.size());
 	}
@@ -192,9 +193,9 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationMovLastTestNoResultException() {
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestNoResultException START *****");
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
 
-		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNull(validation);
 	}
 }

@@ -98,12 +98,12 @@ public class PISDR103Impl extends PISDR103Abstract {
 	}
 
 	@Override
-	public Map<String, Object> executeGetRequestCancellationMovLast(Map<String, Object> arguments) {
+	public List<Map<String, Object>> executeGetRequestCancellationMovLast(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellationMovLast START *****");
-		Map<String, Object> response = null;
+		List<Map<String, Object>> response = null;
 		try {
-			response = this.jdbcUtils.queryForMap(Properties.QUERY_SELECT_INSURANCE_REQ_CNCL_MOV_LAST.getValue(), arguments);
-			response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST] Result -> Key {} with value: {}", key, value));
+			response = this.jdbcUtils.queryForList(Properties.QUERY_SELECT_INSURANCE_REQ_CNCL_MOV_LAST.getValue(), arguments);
+			response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST] Result -> Key {} with value: {}", key, value)));
 		} catch (NoResultException ex) {
 			LOGGER.info("PISDR103Impl - executeGetRequestCancellationMovLast - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST]");
 			this.addAdvice(Errors.NO_DATA_FOUND.getAdviceCode());
