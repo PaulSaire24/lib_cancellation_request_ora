@@ -3,11 +3,7 @@ package com.bbva.pisd.lib.r103;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The  interface PISDR103 class...
- */
 public interface PISDR103 {
-
 	enum Fields {
 		REQUEST_SEQUENCE_ID,
 		INSURANCE_CONTRACT_ENTITY_ID,
@@ -73,7 +69,8 @@ public interface PISDR103 {
         POLICY_PAYMENT_FREQUENCY_TYPE,
         RECEIPT_START_DATE,
         RECEIPT_END_DATE,
-		RECEIPT_STATUS_TYPE;
+		RECEIPT_STATUS_TYPE,
+		INSURANCE_MANAGER_ID;
 	}
 
 	enum ReceiptStatusType {
