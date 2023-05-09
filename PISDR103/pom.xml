@@ -9,7 +9,7 @@
 	<groupId>com.bbva.pisd</groupId>
 	<artifactId>PISDR103</artifactId>
 	<name>PISDR103</name>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<description>Deployment unit lib_cancellation_request_ora of uuaa pisd</description>
 	<properties>
