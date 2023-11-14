@@ -198,4 +198,22 @@ public class PISDR103Test {
 		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNull(validation);
 	}
+
+	@Test
+	public void executeGetRequestCancellationTestOK(){
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationTestOK START *****");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap<>());
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellation(arguments);
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetRequestCancellationTestNoResultException(){
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationTestNoResultException START *****");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellation(arguments);
+		assertNull(validation);
+	}
 }

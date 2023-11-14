@@ -112,6 +112,21 @@ public class PISDR103Impl extends PISDR103Abstract {
 		return response;
 	}
 
+
+	@Override
+	public Map<String, Object> executeGetRequestCancellation(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellation START *****");
+		Map<String, Object> response = null;
+		try {
+			response = this.jdbcUtils.queryForMap(Properties.QUERY_SELECT_INSURANCE_REQUEST_CNCL.getValue(),arguments);
+			response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQUEST_CNCL] Result -> Key {} with value: {}", key, value));
+		} catch (NoResultException ex) {
+			LOGGER.info("PISDR103Impl - executeGetRequestCancellation - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_REQUEST_CNCL]");
+			this.addAdvice(Errors.NO_DATA_FOUND.getAdviceCode());
+		}
+		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellation END *****");
+		return response;
+	}
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
 		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
 	}
