@@ -171,21 +171,21 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationMovLastTestOK(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestOK START *****");
-		List<Map<String, Object>> response = new ArrayList<>();
-		response.add(new HashMap<>());
-		response.get(0).put("REQUEST_SEQUENCE_ID", "123");
-		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(response);
+		Map<String, Object> objectMap = new HashMap<>();
+		objectMap.put("REQUEST_SEQUENCE_ID", "123");
 
-		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(objectMap);
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNotNull(validation);
 	}
 
 	@Test
 	public void executeGetRequestCancellationMovLastTestEmpty(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestNullEmpty START *****");
-		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(new ArrayList());
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap<>());
 
-		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNotNull(validation);
 		assertEquals(0, validation.size());
 	}
@@ -193,9 +193,9 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationMovLastTestNoResultException() {
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestNoResultException START *****");
-		when(jdbcUtils.queryForList(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
 
-		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNull(validation);
 	}
 
@@ -215,5 +215,21 @@ public class PISDR103Test {
 
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellation(arguments);
 		assertNull(validation);
+	}
+
+	@Test
+	public void executeexecuteUpdateContractToRetention() {
+		LOGGER.info("***** PISDR103Test - executeUpdateContractToRetention START *****");
+		int result = 1;
+		Map<String, Object> objectMap = new HashMap<>();
+		objectMap.put("CONTRACT_STATUS_ID", "01");
+		objectMap.put("INSURANCE_CONTRACT_ENTITY_ID", "0011");
+		objectMap.put("INSURANCE_CONTRACT_BRANCH_ID", "0172");
+		objectMap.put("INSRC_CONTRACT_INT_ACCOUNT_ID", "4000021794");
+
+		when(jdbcUtils.update(anyString(), anyMap())).thenReturn(result);
+
+		int myResult = pisdr103.executeUpdateContractToRetention(objectMap);
+		assertEquals(result, myResult);
 	}
 }
