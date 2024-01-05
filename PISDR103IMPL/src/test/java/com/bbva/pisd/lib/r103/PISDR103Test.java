@@ -95,10 +95,12 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationIdTestOK(){
 		LOGGER.info("PISDR103Test - Executing executeGetRequestCancellationIdOK...");
-		Map<String, Object> requestCancellationId = new HashMap<String, Object>() {{
+		List<Map<String, Object>> requestCancellationId = new ArrayList<>();
+		Map<String, Object> re = new HashMap<String, Object>() {{
 			put("key", new Object());
 		}};
-		when(jdbcUtils.queryForMap(Properties.QUERY_SELECT_REQUEST_SEQUENCE_ID.getValue(), arguments)).thenReturn(requestCancellationId);
+		requestCancellationId.add(re);
+		when(jdbcUtils.queryForList(Properties.QUERY_SELECT_REQUEST_SEQUENCE_ID.getValue(), arguments)).thenReturn(requestCancellationId);
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellationId();
 		assertNotNull(validation);
 	}
@@ -202,7 +204,10 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationTestOK(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationTestOK START *****");
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap<>());
+		List<Map<String, Object>> request = new ArrayList<>();
+		Map<String, Object> firstResult = new HashMap<>();
+		request.add(firstResult);
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(request);
 
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellation(arguments);
 		assertNotNull(validation);
@@ -211,7 +216,7 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationTestNoResultException(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationTestNoResultException START *****");
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
 
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellation(arguments);
 		assertNull(validation);
