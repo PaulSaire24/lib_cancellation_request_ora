@@ -211,6 +211,10 @@ public class PISDR103Test {
 
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellation(arguments);
 		assertNotNull(validation);
+
+		List<Map<String, Object>> request1 = new ArrayList<>();;
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(request1);
+		assertNotNull(validation);
 	}
 
 	@Test

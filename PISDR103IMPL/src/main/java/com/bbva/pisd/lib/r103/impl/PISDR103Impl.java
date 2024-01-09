@@ -120,7 +120,7 @@ public class PISDR103Impl extends PISDR103Abstract {
 		Map<String, Object> response = null;
 		try {
 			responseList = this.jdbcUtils.queryForList(Properties.QUERY_SELECT_INSURANCE_REQUEST_CNCL.getValue(),arguments);
-			if(responseList!=null && responseList.size()>=1) {
+			if(responseList!=null && !responseList.isEmpty()) {
 				response = responseList.get(0);
 				response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQUEST_CNCL] Result -> Key {} with value: {}", key, value));
 			}
