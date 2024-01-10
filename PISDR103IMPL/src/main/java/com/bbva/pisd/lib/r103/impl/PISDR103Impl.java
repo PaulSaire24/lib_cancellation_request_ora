@@ -32,6 +32,20 @@ public class PISDR103Impl extends PISDR103Abstract {
 	}
 
 	@Override
+	public int executeSaveInsuranceRequestCancellationI(Map<String, Object> argumentsInvestment) {
+		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationInvestment START *****");
+		int countAffectedRow = 0;
+		if (parametersEvaluation(argumentsInvestment, PISDR103.Fields.REQUEST_SEQUENCE_ID.toString(), PISDR103.Fields.CHANNEL_ID.toString(), PISDR103.Fields.INSURANCE_PRODUCT_ID.toString(), PISDR103.Fields.USER_AUDIT_ID.toString())) {
+			LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationInvestment - PARAMETERS OK ... EXECUTING *****");
+			countAffectedRow = this.jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_REQUEST_CNCL_INVESTMENT.getValue(), argumentsInvestment);
+		} else {
+			LOGGER.debug("executeSaveInsuranceRequestCancellationInvestment - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_REQUEST_CNCL_INVESTMENT]");
+		}
+		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationInvestment END *****");
+		return countAffectedRow;
+	}
+
+	@Override
 	public int executeSaveInsuranceRequestCancellationMov(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationMov START *****");
 		int affectedRow = 0;
