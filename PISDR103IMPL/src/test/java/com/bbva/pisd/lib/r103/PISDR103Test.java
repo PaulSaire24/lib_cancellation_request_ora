@@ -77,6 +77,22 @@ public class PISDR103Test {
 	}
 
 	@Test
+	public void executeSaveInsuranceRequestCancellationInvestmentTestOK(){
+		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceRequestCancellationTestOK...");
+		when(jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_REQUEST_CNCL_INVESTMENT.getValue(), arguments)).thenReturn(1);
+		int validation = pisdr103.executeSaveInsuranceRequestCancellationI(arguments);
+		assertEquals(1, validation);
+	}
+
+	@Test
+	public void executeSaveInsuranceRequestCancellationInvestmentTestNotInsert(){
+		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceRequestCancellationTestNotUpdate...");
+		when(arguments.get(PISDR103.Fields.REQUEST_SEQUENCE_ID.toString())).thenReturn(null);
+		int validation = pisdr103.executeSaveInsuranceRequestCancellationI(arguments);
+		assertEquals(0, validation);
+	}
+
+	@Test
 	public void executeSaveInsuranceRequestCancellationMovTestOK(){
 		LOGGER.info("PISDR103Test - Executing executeSaveInsuranceRequestCancellationMovTestOK...");
 		when(jdbcUtils.update(Properties.QUERY_INSERT_INSURANCE_REQ_CNCL_MOV.getValue(), arguments)).thenReturn(1);
