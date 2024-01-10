@@ -95,10 +95,12 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationIdTestOK(){
 		LOGGER.info("PISDR103Test - Executing executeGetRequestCancellationIdOK...");
-		Map<String, Object> requestCancellationId = new HashMap<String, Object>() {{
+		List<Map<String, Object>> requestCancellationId = new ArrayList<>();
+		Map<String, Object> re = new HashMap<String, Object>() {{
 			put("key", new Object());
 		}};
-		when(jdbcUtils.queryForMap(Properties.QUERY_SELECT_REQUEST_SEQUENCE_ID.getValue(), arguments)).thenReturn(requestCancellationId);
+		requestCancellationId.add(re);
+		when(jdbcUtils.queryForList(Properties.QUERY_SELECT_REQUEST_SEQUENCE_ID.getValue(), arguments)).thenReturn(requestCancellationId);
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellationId();
 		assertNotNull(validation);
 	}
@@ -171,21 +173,21 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationMovLastTestOK(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestOK START *****");
-		Map<String, Object> objectMap = new HashMap<>();
-		objectMap.put("REQUEST_SEQUENCE_ID", "123");
+		List<Map<String, Object>> response = new ArrayList<>();
+		response.add(new HashMap<>());
+		response.get(0).put("REQUEST_SEQUENCE_ID", "123");
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(response);
 
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(objectMap);
-
-		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNotNull(validation);
 	}
 
 	@Test
 	public void executeGetRequestCancellationMovLastTestEmpty(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestNullEmpty START *****");
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap<>());
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(new ArrayList());
 
-		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNotNull(validation);
 		assertEquals(0, validation.size());
 	}
@@ -193,43 +195,34 @@ public class PISDR103Test {
 	@Test
 	public void executeGetRequestCancellationMovLastTestNoResultException() {
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastTestNoResultException START *****");
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
 
-		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
+		List<Map<String, Object>> validation = pisdr103.executeGetRequestCancellationMovLast(arguments);
 		assertNull(validation);
 	}
 
 	@Test
 	public void executeGetRequestCancellationTestOK(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationTestOK START *****");
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap<>());
+		List<Map<String, Object>> request = new ArrayList<>();
+		Map<String, Object> firstResult = new HashMap<>();
+		request.add(firstResult);
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(request);
 
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellation(arguments);
+		assertNotNull(validation);
+
+		List<Map<String, Object>> request1 = new ArrayList<>();;
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(request1);
 		assertNotNull(validation);
 	}
 
 	@Test
 	public void executeGetRequestCancellationTestNoResultException(){
 		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationTestNoResultException START *****");
-		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
 
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellation(arguments);
 		assertNull(validation);
-	}
-
-	@Test
-	public void executeexecuteUpdateContractToRetention() {
-		LOGGER.info("***** PISDR103Test - executeUpdateContractToRetention START *****");
-		int result = 1;
-		Map<String, Object> objectMap = new HashMap<>();
-		objectMap.put("CONTRACT_STATUS_ID", "01");
-		objectMap.put("INSURANCE_CONTRACT_ENTITY_ID", "0011");
-		objectMap.put("INSURANCE_CONTRACT_BRANCH_ID", "0172");
-		objectMap.put("INSRC_CONTRACT_INT_ACCOUNT_ID", "4000021794");
-
-		when(jdbcUtils.update(anyString(), anyMap())).thenReturn(result);
-
-		int myResult = pisdr103.executeUpdateContractToRetention(objectMap);
-		assertEquals(result, myResult);
 	}
 }

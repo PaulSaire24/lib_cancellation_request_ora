@@ -98,12 +98,12 @@ public class PISDR103Impl extends PISDR103Abstract {
 	}
 
 	@Override
-	public Map<String, Object> executeGetRequestCancellationMovLast(Map<String, Object> arguments) {
+	public List<Map<String, Object>> executeGetRequestCancellationMovLast(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellationMovLast START *****");
-		Map<String, Object> response = null;
+		List<Map<String, Object>> response = null;
 		try {
-			response = this.jdbcUtils.queryForMap(Properties.QUERY_SELECT_INSURANCE_REQ_CNCL_MOV_LAST.getValue(), arguments);
-			response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST] Result -> Key {} with value: {}", key, value));
+			response = this.jdbcUtils.queryForList(Properties.QUERY_SELECT_INSURANCE_REQ_CNCL_MOV_LAST.getValue(), arguments);
+			response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST] Result -> Key {} with value: {}", key, value)));
 		} catch (NoResultException ex) {
 			LOGGER.info("PISDR103Impl - executeGetRequestCancellationMovLast - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST]");
 			this.addAdvice(Errors.NO_DATA_FOUND.getAdviceCode());
@@ -116,10 +116,14 @@ public class PISDR103Impl extends PISDR103Abstract {
 	@Override
 	public Map<String, Object> executeGetRequestCancellation(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellation START *****");
+		List<Map<String, Object>> responseList = null;
 		Map<String, Object> response = null;
 		try {
-			response = this.jdbcUtils.queryForMap(Properties.QUERY_SELECT_INSURANCE_REQUEST_CNCL.getValue(),arguments);
-			response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQUEST_CNCL] Result -> Key {} with value: {}", key, value));
+			responseList = this.jdbcUtils.queryForList(Properties.QUERY_SELECT_INSURANCE_REQUEST_CNCL.getValue(),arguments);
+			if(responseList!=null && !responseList.isEmpty()) {
+				response = responseList.get(0);
+				response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQUEST_CNCL] Result -> Key {} with value: {}", key, value));
+			}
 		} catch (NoResultException ex) {
 			LOGGER.info("PISDR103Impl - executeGetRequestCancellation - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_REQUEST_CNCL]");
 			this.addAdvice(Errors.NO_DATA_FOUND.getAdviceCode());
@@ -127,19 +131,6 @@ public class PISDR103Impl extends PISDR103Abstract {
 		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellation END *****");
 		return response;
 	}
-
-	@Override
-	public int executeUpdateContractToRetention(Map<String, Object> arguments) {
-		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationMov START *****");
-
-		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationMov - PARAMETERS OK ... EXECUTING *****");
-		int affectedRow = this.jdbcUtils.update(Properties.QUERY_UPDATE_CONTRACT_TO_RETENTION.getValue(), arguments);
-
-		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationMov END *****");
-		return affectedRow;
-	}
-
-
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
 		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
 	}
