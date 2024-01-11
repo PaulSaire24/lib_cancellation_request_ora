@@ -241,4 +241,52 @@ public class PISDR103Test {
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellation(arguments);
 		assertNull(validation);
 	}
+
+	@Test
+	public void executeexecuteUpdateContractToRetention() {
+		LOGGER.info("***** PISDR103Test - executeUpdateContractToRetention START *****");
+		int result = 1;
+		Map<String, Object> objectMap = new HashMap<>();
+		objectMap.put("CONTRACT_STATUS_ID", "01");
+		objectMap.put("INSURANCE_CONTRACT_ENTITY_ID", "0011");
+		objectMap.put("INSURANCE_CONTRACT_BRANCH_ID", "0172");
+		objectMap.put("INSRC_CONTRACT_INT_ACCOUNT_ID", "4000021794");
+
+		when(jdbcUtils.update(anyString(), anyMap())).thenReturn(result);
+
+		int myResult = pisdr103.executeUpdateContractToRetention(objectMap);
+		assertEquals(result, myResult);
+	}
+
+
+	@Test
+	public void executeGetRequestCancellationMovLastRetentionTestOK(){
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastRetentionTestOK START *****");
+		Map<String, Object> objectMap = new HashMap<>();
+		objectMap.put("REQUEST_SEQUENCE_ID", "123");
+
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(objectMap);
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLastRetention(arguments);
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetRequestCancellationMovLastRetentionTestEmpty(){
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastRetentionTestEmpty START *****");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(new HashMap<>());
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLastRetention(arguments);
+		assertNotNull(validation);
+		assertEquals(0, validation.size());
+	}
+
+	@Test
+	public void executeGetRequestCancellationMovLastRetentionTestNoResultException() {
+		LOGGER.info("***** PISDR103Test - executeGetRequestCancellationMovLastRetentionTestNoResultException START *****");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+
+		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLastRetention(arguments);
+		assertNull(validation);
+	}
 }
