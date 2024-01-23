@@ -32,7 +32,7 @@ public class PISDR103Impl extends PISDR103Abstract {
 	}
 
 	@Override
-	public int executeSaveInsuranceRequestCancellationI(Map<String, Object> argumentsInvestment) {
+	public int executeSaveRequestCancellationInversion(Map<String, Object> argumentsInvestment) {
 		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationInvestment START *****");
 		int countAffectedRow = 0;
 		if (parametersEvaluation(argumentsInvestment, PISDR103.Fields.REQUEST_SEQUENCE_ID.toString(), PISDR103.Fields.CHANNEL_ID.toString(), PISDR103.Fields.INSURANCE_PRODUCT_ID.toString(), PISDR103.Fields.USER_AUDIT_ID.toString())) {
