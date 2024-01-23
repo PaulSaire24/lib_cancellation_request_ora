@@ -86,7 +86,7 @@ public interface PISDR103 {
 
 	int executeSaveInsuranceRequestCancellation(Map<String, Object> arguments);
 
-	int executeSaveRequestCancellationInversion(Map<String, Object> arguments);
+	int executeSaveRequestCancellationInvestment(Map<String, Object> arguments);
 
 	int executeSaveInsuranceRequestCancellationMov(Map<String, Object> arguments);
 
