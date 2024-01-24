@@ -148,12 +148,12 @@ public class PISDR103Impl extends PISDR103Abstract {
 
 	@Override
 	public int executeUpdateContractToRetention(Map<String, Object> arguments) {
-		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationMov START *****");
+		LOGGER.info("***** PISDR103Impl - executeUpdateContractToRetention START *****");
 
-		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationMov - PARAMETERS OK ... EXECUTING *****");
+		LOGGER.info("***** PISDR103Impl - executeUpdateContractToRetention - PARAMETERS OK ... EXECUTING *****");
 		int affectedRow = this.jdbcUtils.update(Properties.QUERY_UPDATE_CONTRACT_TO_RETENTION.getValue(), arguments);
 
-		LOGGER.info("***** PISDR103Impl - executeSaveInsuranceRequestCancellationMov END *****");
+		LOGGER.info("***** PISDR103Impl - executeUpdateContractToRetention END *****");
 		return affectedRow;
 	}
 
