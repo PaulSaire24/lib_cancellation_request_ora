@@ -70,7 +70,8 @@ public interface PISDR103 {
         RECEIPT_START_DATE,
         RECEIPT_END_DATE,
 		RECEIPT_STATUS_TYPE,
-		INSURANCE_MANAGER_ID;
+		INSURANCE_MANAGER_ID,
+		REQUEST_TYPE;
 	}
 
 	enum ReceiptStatusType {
@@ -101,6 +102,8 @@ public interface PISDR103 {
 	Map<String, Object> executeGetRequestCancellation(Map<String, Object> arguments);
 
 	int executeUpdateContractToRetention(Map<String, Object> arguments);
+
+	int executeUpdateCancellationRequest(Map<String, Object> arguments);
 
 	Map<String, Object> executeGetRequestCancellationMovLastRetention(Map<String, Object> arguments);
 }
