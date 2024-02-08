@@ -58,6 +58,7 @@ public class PISDR103Test {
 		when(arguments.get(PISDR103.Fields.INSURANCE_PRODUCT_ID.toString())).thenReturn("830");
 		when(arguments.get(PISDR103.Fields.CHANNEL_ID.toString())).thenReturn("PC");
 		when(arguments.get(PISDR103.Fields.USER_AUDIT_ID.toString())).thenReturn("USER");
+		when(arguments.get(PISDR103.Fields.REQUEST_TYPE.toString())).thenReturn("001");
 	}
 
 	@Test
@@ -255,6 +256,23 @@ public class PISDR103Test {
 		when(jdbcUtils.update(anyString(), anyMap())).thenReturn(result);
 
 		int myResult = pisdr103.executeUpdateContractToRetention(objectMap);
+		assertEquals(result, myResult);
+	}
+
+	@Test
+	public void executeexecuteUpdateCancellationRequest() {
+		LOGGER.info("***** PISDR103Test - executeUpdateCancellationRequest START *****");
+		int result = 1;
+		Map<String, Object> objectMap = new HashMap<>();
+		objectMap.put("POLICY_ANNULATION_DATE", "01/01/2024");
+		objectMap.put("REQUEST_STATUS_NAME", "END_OF_VALIDITY");
+		objectMap.put("INSURANCE_CONTRACT_ENTITY_ID", "0011");
+		objectMap.put("INSURANCE_CONTRACT_BRANCH_ID", "0172");
+		objectMap.put("INSRC_CONTRACT_INT_ACCOUNT_ID", "4000021794");
+
+		when(jdbcUtils.update(anyString(), anyMap())).thenReturn(result);
+
+		int myResult = pisdr103.executeUpdateCancellationRequest(objectMap);
 		assertEquals(result, myResult);
 	}
 

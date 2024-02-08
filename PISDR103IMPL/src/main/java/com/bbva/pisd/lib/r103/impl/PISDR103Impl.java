@@ -158,6 +158,17 @@ public class PISDR103Impl extends PISDR103Abstract {
 	}
 
 	@Override
+	public int executeUpdateCancellationRequest(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR103Impl - executeUpdateCancellationRequest START *****");
+
+		LOGGER.info("***** PISDR103Impl - executeUpdateCancellationRequest - PARAMETERS OK ... EXECUTING *****");
+		int affectedRow = this.jdbcUtils.update(Properties.QUERY_UPDATE_CANCELLATION_REQUEST.getValue(), arguments);
+
+		LOGGER.info("***** PISDR103Impl - executeUpdateCancellationRequest END *****");
+		return affectedRow;
+	}
+
+	@Override
 	public Map<String, Object> executeGetRequestCancellationMovLastRetention(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR103Impl - executeGetRequestCancellationMovLastRetention START *****");
 		Map<String, Object> response = null;
