@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.bbva.pisd</groupId>
 	<artifactId>PISDR103-parent</artifactId>
-	<version>0.5.7</version>
+	<version>0.5.8</version>
 	<name>PISDR103-parent</name>
 	<description>Deployment unit lib_cancellation_request_ora of uuaa pisd</description>
 	<packaging>pom</packaging>
