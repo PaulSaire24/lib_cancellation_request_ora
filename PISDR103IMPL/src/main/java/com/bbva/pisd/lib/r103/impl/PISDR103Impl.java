@@ -174,7 +174,7 @@ public class PISDR103Impl extends PISDR103Abstract {
 		Map<String, Object> response = null;
 		try {
 			response = this.jdbcUtils.queryForMap(Properties.QUERY_SELECT_INSURANCE_REQ_CNCL_MOV_LAST_RETENTION.getValue(), arguments);
-			response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST] Result -> Key {} with value: {}", key, value));
+			response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST_RETENTION] Result -> Key {} with value: {}", key, value));
 		} catch (NoResultException ex) {
 			LOGGER.info("PISDR103Impl - executeGetRequestCancellationMovLastRetention - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_REQ_CNCL_MOV_LAST]");
 			this.addAdvice(Errors.NO_DATA_FOUND.getAdviceCode());
@@ -199,6 +199,31 @@ public class PISDR103Impl extends PISDR103Abstract {
 		arguments.put(Fields.SECOND_VERFN_DIGIT.name(), contractNumber.substring(9, 10));
 		arguments.put(Fields.ACCOUNT_ID.name(), contractNumber.substring(10, 20));
 		return arguments;
+	}
+
+	@Override
+	public boolean executeGetCountRequestCancellation(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR103Impl - executeGetCountRequestCancellation START *****");
+		Map<String, Object> response = null;
+		Integer countResult;
+		boolean isRequestCancellation = false;
+
+		try {
+			response = this.jdbcUtils.queryForMap(Properties.QUERY_SELECT_COUNT_REQUEST_CANCELLATION.getValue(), arguments);
+			response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_COUNT_REQUEST_CANCELLATION] Result -> Key {} with value: {}", key, value));
+
+			countResult = Integer.valueOf( response.get("COUNT").toString() ) ;
+
+			if(countResult.equals(1)) {
+				isRequestCancellation = true;
+			}
+
+		} catch (NoResultException ex) {
+			LOGGER.info("PISDR103Impl - executeGetCountRequestCancellation - QUERY EMPTY RESULT [PISD.SELECT_COUNT_REQUEST_CANCELLATION]");
+			this.addAdvice(Errors.NO_DATA_FOUND.getAdviceCode());
+		}
+		LOGGER.info("***** PISDR103Impl - executeGetCountRequestCancellation END ***** isRequestCancellation: {}", isRequestCancellation);
+		return isRequestCancellation;
 	}
 
 }

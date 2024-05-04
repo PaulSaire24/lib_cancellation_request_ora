@@ -106,4 +106,6 @@ public interface PISDR103 {
 	int executeUpdateCancellationRequest(Map<String, Object> arguments);
 
 	Map<String, Object> executeGetRequestCancellationMovLastRetention(Map<String, Object> arguments);
+
+	boolean executeGetCountRequestCancellation(Map<String, Object> arguments);
 }
