@@ -22,9 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -306,5 +304,30 @@ public class PISDR103Test {
 
 		Map<String, Object> validation = pisdr103.executeGetRequestCancellationMovLastRetention(arguments);
 		assertNull(validation);
+	}
+
+	@Test
+	public void executeGetCountRequestCancellationTestOK(){
+		LOGGER.info("***** PISDR103Test - executeGetCountRequestCancellationTestOK START *****");
+		Map<String, Object> objectMap = new HashMap<>();
+		objectMap.put("REQUEST_SEQUENCE_ID", "123");
+		objectMap.put("COUNT", "1");
+
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenReturn(objectMap);
+
+		boolean validation = pisdr103.executeGetCountRequestCancellation(arguments);
+		assertNotNull(validation);
+		assertTrue(validation);
+	}
+
+	@Test
+	public void executeGetCountRequestCancellationTestNoResultException() {
+		LOGGER.info("***** PISDR103Test - executeGetCountRequestCancellationTestNoResultException START *****");
+		when(jdbcUtils.queryForMap(anyString(), anyMap())).thenThrow(new NoResultException(PISDR103.Errors.NO_DATA_FOUND.name()));
+
+		boolean validation = pisdr103.executeGetCountRequestCancellation(arguments);
+
+		assertFalse(validation);
+		assertEquals(PISDR103.Errors.NO_DATA_FOUND.getAdviceCode(), this.pisdr103.getAdviceList().get(0).getCode());
 	}
 }
